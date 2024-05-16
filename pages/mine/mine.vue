@@ -41,8 +41,6 @@
 							</view>
 						</view>
 
-
-
 					</view>
 				</view>
 				<view class="justify-content-item" @click="tn('/minePages/set')">
