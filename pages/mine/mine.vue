@@ -192,7 +192,9 @@
 
 				phoneNum: '000',
 
-				mail: '000'
+				mail: '000',
+				
+				login: false,
 			}
 		},
 		onLoad() {

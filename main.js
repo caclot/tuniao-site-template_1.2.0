@@ -27,5 +27,5 @@ const app = new Vue({
 new Vue({
   store: loginState, // 使用 Vuex 的状态管理
   render: h => h(App),
-}).$mount('#app');
+});
 app.$mount()

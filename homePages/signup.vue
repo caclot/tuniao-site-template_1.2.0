@@ -58,7 +58,7 @@
 					console.log(this.package_id3);
 		
 					uni.request({
-						url: 'http://139.196.211.123:8081/package/pickupPackage',
+						url: 'http://139.196.211.123:8081/package/signedPackage',
 						method: 'POST',
 						data: this.package_id3,
 						success: (res) => {
