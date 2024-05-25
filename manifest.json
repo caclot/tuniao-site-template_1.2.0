@@ -2,8 +2,8 @@
     "name" : "卓越快递",
     "appid" : "__UNI__8223C58",
     "description" : "郑州大学软卓案例测试1",
-    "versionName" : "1.0.0",
-    "versionCode" : "100",
+    "versionName" : "2.0",
+    "versionCode" : 200,
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true,

@@ -22,7 +22,8 @@
 </template>
 
 <script>
-	import template_page_mixin from '@/libs/mixin/template_page_mixin.js'
+	import loginState from '../store/loginState';
+import template_page_mixin from '@/libs/mixin/template_page_mixin.js'
 
 	export default {
 		name: 'TemplateHistory',
@@ -36,7 +37,7 @@
 		methods: {
 			goToRegister() {
 				uni.redirectTo({
-				  url: 'enroll',
+					url: 'enroll',
 				});
 
 				// uni.navigateTo({
@@ -63,25 +64,62 @@
 					success: (res) => {
 						// 登录成功，跳转到首页或其他页面
 						if (res.data.code === 200) {
+							uni.setStorage({
+								key: 'login',
+								data: '1',
+								success: function () {
+									console.log("login本地存储成功");
+								}
+							});
+							uni.setStorage({
+								key: 'name',
+								data: res.data.data.name,
+								success: function () {
+									console.log("name本地存储成功");
+								}
+							});
+							uni.setStorage({
+								key: 'email',
+								data: res.data.data.eamil,
+								success: function () {
+									console.log("email本地存储成功",res.data.data.eamil);
+								}
+							});
+							uni.setStorage({
+								key: 'phone',
+								data: res.data.data.phone,
+								success: function () {
+									console.log("phone本地存储成功");
+								}
+							});
 							// 保存登录状态等操作
-							getApp().globalData.loginState = true;
-							console.log(getApp().globalData.loginState);
-							console.log(res.data.data.name,res.data.data.id);
-							getApp().globalData.username = res.data.data.name;
-							getApp().globalData.uid = res.data.data.id;
+							uni.setStorage({
+								key: 'id',
+								data: res.data.data.id,
+								success: function () {
+									console.log("id本地存储成功");
+								}
+							});
+							uni.setStorage({
+								key: 'token',
+								data: res.data.data.token,
+								success: function () {
+									console.log("token本地存储成功");
+								}
+							});
+
 							uni.showToast({
 								title: '登录成功',
 								icon: 'success',
-								duration: 2000,
-								success: () => {
-									setTimeout(function(){
-										console.log("这不是有吗")
-									uni.navigateBack({
-										url: '/pages/mine/mine',
-									});
-									},2000)
-								},
+								duration: 500,
+								//success: () => {},
 							});
+
+								console.log("登录跳转的验证日志，位于登录request=>success>")
+								uni.navigateBack({
+									url: '/pages/mine/mine',
+								});
+
 						} else {
 							uni.showToast({
 								title: res.data.message || '登录失败，请重试',
@@ -158,6 +196,7 @@
 		margin-top: 10px;
 		cursor: pointer;
 	}
+
 	.tn-custom-nav-bar__back {
 		width: 60%;
 		height: 100%;
@@ -171,16 +210,16 @@
 		border: 1rpx solid rgba(255, 255, 255, 0.5);
 		color: #FFFFFF;
 		font-size: 18px;
-	
+
 		.icon {
 			display: block;
 			flex: 1;
 			margin: auto;
 			text-align: center;
 		}
-	
+
 	}
-	
+
 
 	.register-link:hover {
 		text-decoration: underline;

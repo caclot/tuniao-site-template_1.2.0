@@ -43,7 +43,7 @@
 					uni.scanCode({
 						success: (res) => {
 							// 扫码成功，将结果填充到输入框中
-							this.package_id1 = res.result;
+							this.package_id3 = res.result;
 						},
 						fail: (err) => {
 							console.error('扫码失败', err);

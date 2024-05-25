@@ -3598,7 +3598,7 @@ var render = function () {
           _c("v-uni-image", {
             staticClass: _vm._$g(2, "sc"),
             attrs: {
-              src: "https://resource.tuniaokj.com/images/my/my-bg4.png",
+              src: "/static/images/mineBack.png",
               mode: "widthFix",
               _i: 2,
             },
@@ -3618,7 +3618,7 @@ var render = function () {
             "uni-view",
             {
               staticClass: _vm._$g(4, "sc"),
-              staticStyle: { "margin-top": "-300rpx" },
+              staticStyle: { "margin-top": "-450rpx" },
               attrs: { _i: 4 },
             },
             [
@@ -3650,7 +3650,7 @@ var render = function () {
                                 staticClass: _vm._$g(9, "sc"),
                                 staticStyle: {
                                   "background-image":
-                                    "url('https://cdn.nlark.com/yuque/0/2022/jpeg/280373/1664005699053-assets/web-upload/8645ea3a-e0a9-4422-8364-cc5ede305c9f.jpeg')",
+                                    "url('/static/images/5.jpg')",
                                   width: "110rpx",
                                   height: "110rpx",
                                   "background-size": "cover",
@@ -3748,6 +3748,14 @@ var render = function () {
           _c(
             "uni-view",
             {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm._$g(18, "v-show"),
+                  expression: "_$g(18,'v-show')",
+                },
+              ],
               staticClass: _vm._$g(18, "sc"),
               attrs: { _i: 18 },
               on: {
@@ -4177,81 +4185,91 @@ var render = function () {
         ],
         1
       ),
-      _c(
-        "uni-view",
-        { attrs: { _i: 70 } },
-        [
-          _c(
+      _vm._$g(70, "i")
+        ? _c(
             "uni-view",
-            {
-              staticClass: _vm._$g(71, "sc"),
-              attrs: { _i: 71 },
-              on: {
-                click: function ($event) {
-                  return _vm.$handleViewEvent($event)
-                },
-              },
-            },
-            [_vm._v("退出登录")]
-          ),
-          _c(
-            "uni-view",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm._$g(72, "v-show"),
-                  expression: "_$g(72,'v-show')",
-                },
-              ],
-              staticClass: _vm._$g(72, "sc"),
-              staticStyle: { "z-index": "999" },
-              attrs: { _i: 72 },
-            },
+            { attrs: { _i: 70 } },
             [
               _c(
                 "uni-view",
-                { staticClass: _vm._$g(73, "sc"), attrs: { _i: 73 } },
+                {
+                  staticClass: _vm._$g(71, "sc"),
+                  attrs: { _i: 71 },
+                  on: {
+                    click: function ($event) {
+                      return _vm.$handleViewEvent($event)
+                    },
+                  },
+                },
+                [_vm._v("退出登录")]
+              ),
+              _c(
+                "uni-view",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm._$g(72, "v-show"),
+                      expression: "_$g(72,'v-show')",
+                    },
+                  ],
+                  staticClass: _vm._$g(72, "sc"),
+                  staticStyle: { "z-index": "999" },
+                  attrs: { _i: 72 },
+                },
                 [
                   _c(
                     "uni-view",
-                    { staticClass: _vm._$g(74, "sc"), attrs: { _i: 74 } },
+                    { staticClass: _vm._$g(73, "sc"), attrs: { _i: 73 } },
                     [
                       _c(
                         "uni-view",
-                        { staticClass: _vm._$g(75, "sc"), attrs: { _i: 75 } },
-                        [_vm._v("确认退出？")]
-                      ),
-                      _c(
-                        "uni-view",
-                        { staticClass: _vm._$g(76, "sc"), attrs: { _i: 76 } },
+                        { staticClass: _vm._$g(74, "sc"), attrs: { _i: 74 } },
                         [
                           _c(
                             "uni-view",
                             {
-                              staticClass: _vm._$g(77, "sc"),
-                              attrs: { _i: 77 },
-                              on: {
-                                click: function ($event) {
-                                  return _vm.$handleViewEvent($event)
-                                },
-                              },
+                              staticClass: _vm._$g(75, "sc"),
+                              attrs: { _i: 75 },
                             },
-                            [_vm._v("确定")]
+                            [_vm._v("确认退出？")]
                           ),
                           _c(
                             "uni-view",
                             {
-                              staticClass: _vm._$g(78, "sc"),
-                              attrs: { _i: 78 },
-                              on: {
-                                click: function ($event) {
-                                  return _vm.$handleViewEvent($event)
-                                },
-                              },
+                              staticClass: _vm._$g(76, "sc"),
+                              attrs: { _i: 76 },
                             },
-                            [_vm._v("取消")]
+                            [
+                              _c(
+                                "uni-view",
+                                {
+                                  staticClass: _vm._$g(77, "sc"),
+                                  attrs: { _i: 77 },
+                                  on: {
+                                    click: function ($event) {
+                                      return _vm.$handleViewEvent($event)
+                                    },
+                                  },
+                                },
+                                [_vm._v("确定")]
+                              ),
+                              _c(
+                                "uni-view",
+                                {
+                                  staticClass: _vm._$g(78, "sc"),
+                                  attrs: { _i: 78 },
+                                  on: {
+                                    click: function ($event) {
+                                      return _vm.$handleViewEvent($event)
+                                    },
+                                  },
+                                },
+                                [_vm._v("取消")]
+                              ),
+                            ],
+                            1
                           ),
                         ],
                         1
@@ -4264,10 +4282,8 @@ var render = function () {
               ),
             ],
             1
-          ),
-        ],
-        1
-      ),
+          )
+        : _vm._e(),
       _c("uni-view", { staticClass: _vm._$g(79, "sc"), attrs: { _i: 79 } }),
     ],
     1

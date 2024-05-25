@@ -11,19 +11,19 @@
     </tn-nav-bar> -->
 
 		<view class="top-backgroup">
-			<image src='https://resource.tuniaokj.com/images/my/my-bg4.png' mode='widthFix' class='backgroud-image'>
+			<image src='/static/images/mineBack.png' mode='widthFix' class='backgroud-image'>
 			</image>
 		</view>
 
-		<view class="tn-margin-left tn-margin-right " :style="{paddingTop: vuex_custom_bar_height + 'px'}">
+		<view class="tn-margin-left tn-margin-right " :style="{paddingTop: vuex_custom_bar_height + 'px'} ">
 			<!-- 图标logo/头像 -->
-			<view class="tn-flex tn-flex-row-between tn-flex-col-center tn-margin-bottom" style="margin-top: -300rpx;">
+			<view class="tn-flex tn-flex-row-between tn-flex-col-center tn-margin-bottom" style="margin-top: -450rpx;">
 				<view class="justify-content-item">
 					<view class="tn-flex tn-flex-col-center tn-flex-row-left">
 						<view class="logo-pic tn-shadow" @click="tn('/minePages/info')">
 							<view class="logo-image">
 								<view class="tn-shadow-blur"
-									style="background-image:url('https://cdn.nlark.com/yuque/0/2022/jpeg/280373/1664005699053-assets/web-upload/8645ea3a-e0a9-4422-8364-cc5ede305c9f.jpeg');width: 110rpx;height: 110rpx;background-size: cover;overflow: hidden;">
+									style="background-image:url('/static/images/5.jpg');width: 110rpx;height: 110rpx;background-size: cover;overflow: hidden;">
 								</view>
 							</view>
 						</view>
@@ -41,8 +41,6 @@
 							</view>
 						</view>
 
-
-
 					</view>
 				</view>
 				<view class="justify-content-item" @click="tn('/minePages/set')">
@@ -52,7 +50,7 @@
 			</view>
 
 			<!-- 没有授权，则显示这个授权按钮 -->
-			<view class="tn-flex tn-flex-row-between" @click="tn('/minePages/login')">
+			<view v-show="!login" class="tn-flex tn-flex-row-between" @click="tn('/minePages/login')">
 				<view class="tn-flex-1 justify-content-item tn-margin-xs tn-text-center">
 					<tn-button shape="round" backgroundColor="#1D2541" fontColor="#ffffff" padding="20rpx 0" width="40%"
 						shadow>
@@ -155,7 +153,7 @@
 		</view>
 
 
-		<view>
+		<view v-if="login">
 			<!-- 退出登录按钮 -->
 			<view class="logout-button" @click="showLogoutConfirmDialog">退出登录</view>
 
@@ -198,12 +196,19 @@
 			}
 		},
 		onLoad() {
-			if (getApp().globalData.loginState === true) {
+			console.log(this.login);
+			console.log(this.username);
+			console.log(sessionStorage.getItem("login"));
+			
+			if (sessionStorage.getItem("login") === "1") {
+				this.login = true;
+				console.log(sessionStorage.getItem("name"));
 				console.log('数据怎么不改');
-					this.username = getApp().globalData.username;
-					this.uid = getApp().globalData.uid;
+				this.username = sessionStorage.getItem("username");
+				this.uid = sessionStorage.getItem("uid");
 			}
 			else{
+				this.login = false;
 				this.username = '未命名';
 				this.uid =  '00000000';
 			}
@@ -268,8 +273,8 @@
 			},
 			// 退出登录方法，这里用一个示例方法代替
 			stateLogout() {
-				getApp().globalData.loginState = false;
-				console.log(getApp().globalData.loginState);
+				sessionStorage.setItem("login","0");
+				this.login = false;
 				uni.navigateTo({
 					url: 'mine',
 				})
