@@ -191,26 +191,25 @@
 				phoneNum: '000',
 
 				mail: '000',
-				
+
 				login: false,
 			}
 		},
 		onLoad() {
 			console.log(this.login);
 			console.log(this.username);
-			console.log(sessionStorage.getItem("login"));
-			
-			if (sessionStorage.getItem("login") === "1") {
+			console.log(uni.getStorageSync('login'));
+
+			if (uni.getStorageSync("login") === "1") {
 				this.login = true;
-				console.log(sessionStorage.getItem("name"));
+				console.log(uni.getStorageSync("name"));
 				console.log('数据怎么不改');
-				this.username = sessionStorage.getItem("username");
-				this.uid = sessionStorage.getItem("uid");
-			}
-			else{
+				this.username = uni.getStorageSync("username");
+				this.uid = uni.getStorageSync("uid");
+			} else {
 				this.login = false;
 				this.username = '未命名';
-				this.uid =  '00000000';
+				this.uid = '00000000';
 			}
 		},
 		methods: {
@@ -273,7 +272,7 @@
 			},
 			// 退出登录方法，这里用一个示例方法代替
 			stateLogout() {
-				sessionStorage.setItem("login","0");
+				sessionStorage.setItem("login", "0");
 				this.login = false;
 				uni.navigateTo({
 					url: 'mine',

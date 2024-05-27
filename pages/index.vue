@@ -77,23 +77,7 @@
 			})
 			this.switchTabbar(index)
 			
-				console.log(Mine.login);
-				console.log(Mine.username);
-				console.log(sessionStorage.getItem("login"));
-				
-				if (Mine.login === "1") {
-				Mines.login = true;
-					console.log(sessionStorage.getItem("name"));
-					console.log('数据怎么不改');
-					Mine.username = sessionStorage.getItem("username");
-					Mine.uid = sessionStorage.getItem("uid");
-				}
-				else{
-					console.log("失败了啊没有发生什么吗");
-					Mine.login = false;
-					Mine.username = '未命名';
-					Mine.uid =  '00000000';
-				}
+
 			
 			
 		},

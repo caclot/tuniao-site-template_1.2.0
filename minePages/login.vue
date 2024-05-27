@@ -66,11 +66,12 @@ import template_page_mixin from '@/libs/mixin/template_page_mixin.js'
 						if (res.data.code === 200) {
 							uni.setStorage({
 								key: 'login',
-								data: '1',
+								data: "1",
 								success: function () {
 									console.log("login本地存储成功");
 								}
 							});
+							console.log(uni.getStorageSync('login'));
 							uni.setStorage({
 								key: 'name',
 								data: res.data.data.name,
