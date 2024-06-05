@@ -14,7 +14,7 @@
 			<view class="search-box">
 				<input type="number" class="search-input" placeholder="请输入运单号" v-model="package_id1">
 				<view class="camera-btn" @click="scanCode()">
-					<uni-icons type="camera" :size="28" color="#666"></uni-icons>
+					<uni-icons type="scan" :size="28" color="#666"></uni-icons>
 				</view>
 				<view class="search-btn" @click="handleClick()">揽收</view>
 			</view>

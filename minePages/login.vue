@@ -6,7 +6,7 @@
 				<text class='icon tn-icon-left-arrow'></text>
 			</view>
 			<view class="tn-flex tn-flex-col-center tn-flex-row-center">
-				<text class="tn-text-bold tn-text-xl tn-color-black">登录登录</text>
+				<text class="tn-text-bold tn-text-xl tn-color-black">登录您的账号</text>
 			</view>
 		</tn-nav-bar>
 		<view class="login-container">
@@ -14,7 +14,7 @@
 				<view class="logo">登录</view>
 				<input v-model="email" type="text" placeholder="请输入邮箱" class="input" />
 				<input v-model="password" type="password" placeholder="请输入密码" class="input" />
-				<view class="button" @click="login">登录</view>
+				<view class="button" @click="loginn">登录</view>
 				<view class="register-link" @tap="goToRegister">没有账号？注册一个</view>
 			</view>
 		</view>
@@ -22,8 +22,8 @@
 </template>
 
 <script>
-	import loginState from '../store/loginState';
-import template_page_mixin from '@/libs/mixin/template_page_mixin.js'
+
+	import template_page_mixin from '@/libs/mixin/template_page_mixin.js'
 
 	export default {
 		name: 'TemplateHistory',
@@ -44,7 +44,7 @@ import template_page_mixin from '@/libs/mixin/template_page_mixin.js'
 				// 	url: 'enroll', // 注册页面路径
 				// });
 			},
-			login() {
+			loginn() {
 				// 检查邮箱和密码是否为空
 				if (!this.email.trim() || !this.password.trim()) {
 					uni.showToast({
@@ -62,12 +62,22 @@ import template_page_mixin from '@/libs/mixin/template_page_mixin.js'
 						password: this.password,
 					},
 					success: (res) => {
+
 						// 登录成功，跳转到首页或其他页面
 						if (res.data.code === 200) {
+							
+							this.$store.commit('userLogin', {
+								username: res.data.data.name,
+								uid: res.data.data.id,
+								phone: res.data.data.phone,
+								mail: res.data.data.eamil,
+								area: res.data.data.eamil
+							});
+							
 							uni.setStorage({
 								key: 'login',
-								data: "1",
-								success: function () {
+								data: '1',
+								success: function() {
 									console.log("login本地存储成功");
 								}
 							});
@@ -75,21 +85,21 @@ import template_page_mixin from '@/libs/mixin/template_page_mixin.js'
 							uni.setStorage({
 								key: 'name',
 								data: res.data.data.name,
-								success: function () {
+								success: function() {
 									console.log("name本地存储成功");
 								}
 							});
 							uni.setStorage({
 								key: 'email',
 								data: res.data.data.eamil,
-								success: function () {
-									console.log("email本地存储成功",res.data.data.eamil);
+								success: function() {
+									console.log("email本地存储成功", res.data.data.eamil);
 								}
 							});
 							uni.setStorage({
 								key: 'phone',
 								data: res.data.data.phone,
-								success: function () {
+								success: function() {
 									console.log("phone本地存储成功");
 								}
 							});
@@ -97,14 +107,14 @@ import template_page_mixin from '@/libs/mixin/template_page_mixin.js'
 							uni.setStorage({
 								key: 'id',
 								data: res.data.data.id,
-								success: function () {
+								success: function() {
 									console.log("id本地存储成功");
 								}
 							});
 							uni.setStorage({
 								key: 'token',
 								data: res.data.data.token,
-								success: function () {
+								success: function() {
 									console.log("token本地存储成功");
 								}
 							});
@@ -116,10 +126,10 @@ import template_page_mixin from '@/libs/mixin/template_page_mixin.js'
 								//success: () => {},
 							});
 
-								console.log("登录跳转的验证日志，位于登录request=>success>")
-								uni.navigateBack({
-									url: '/pages/mine/mine',
-								});
+							console.log("登录跳转的验证日志，位于登录request=>success>")
+							uni.navigateBack({
+								url: '/pages/mine/mine',
+							});
 
 						} else {
 							uni.showToast({

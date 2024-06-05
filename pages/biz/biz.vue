@@ -40,7 +40,7 @@
     
     <!-- 功能入口-->
     <view class="tn-info__container tn-flex tn-flex-wrap tn-flex-col-center tn-flex-row-between tn-margin-left tn-margin-right">
-      <block v-for="(item, index) in tuniaoData" :key="index">
+      <block v-for="(item, index) in bussiness" :key="index">
         <view class="tn-info__item tn-flex tn-flex-direction-row tn-flex-col-center tn-flex-row-between tn-color-white tn-shadow-blur" :style="'background-color:'+ item.color +';'"  @click="tn(item.url)">
           <view class="tn-info__item__left tn-flex tn-flex-direction-row tn-flex-col-center tn-flex-row-left">
             <!-- <view class="tn-info__item__left--icon tn-flex tn-flex-col-center tn-flex-row-center">
@@ -82,10 +82,14 @@
         isAndroid: true,
         list: [
           '别偷懒了赶紧干活！',
-          '滴滴滴这里是卓越快递！'
+          '滴滴滴这里是卓越快递！',
+		  '磨磨唧唧',
+		  '不要，不要，快去登录，受不了了',
+		  '从哪里跌倒，就在哪里睡一觉',
+		  '杂鱼~'
         ],
 
-        tuniaoData: [
+        bussiness: [
           {
             title: '揽收快件',
             icon: 'image-text-fill',

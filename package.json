@@ -16,5 +16,8 @@
             "uni-app前端模板",
             "前端页面模板"
         ]
+    },
+    "dependencies": {
+        "@uni-ui/code-ui": "^1.5.3"
     }
 }

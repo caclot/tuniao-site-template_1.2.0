@@ -28,7 +28,7 @@
 							</view>
 						</view>
 						<view class="tn-padding-right">
-							<view class="tn-padding-right tn-padding-left-sm">
+							<view class="tn-padding-right tn-paddin g-left-sm">
 								<text class="tn-color-wallpaper tn-text-xl tn-text-bold">{{username}}</text>
 								<!-- <text class=" tn-round tn-text-xs tn-bg-red tn-color-white tn-margin-left-sm" style="padding: 10rpx 20rpx;">
                   未实名
@@ -153,7 +153,7 @@
 		</view>
 
 
-		<view v-if="login">
+		<view v-show="login">
 			<!-- 退出登录按钮 -->
 			<view class="logout-button" @click="showLogoutConfirmDialog">退出登录</view>
 
@@ -176,41 +176,44 @@
 </template>
 
 <script>
+	import {
+		mapGetters,
+		mapActions
+	} from 'vuex';
 	export default {
 		name: 'Mine',
+		computed: {
+			username() {
+				return this.$store.state.username;
+			},
+			uid() {
+				return this.$store.state.uid;
+			},
+			phone() {
+				return this.$store.state.phone;
+			},
+			mail() {
+				return this.$store.state.mail;
+			},
+			area() {
+				return this.$store.state.area;
+			},
+			login() {
+				return this.$store.state.login;
+			},
+		},
+		methods: {
+			
+		},
 		data() {
 			return {
 				show1: false,
 
 				showConfirmDialog: false, // 是否显示确认退出弹窗
-
-				username: '未命名',
-
-				uid: '00000000',
-
-				phoneNum: '000',
-
-				mail: '000',
-
-				login: false,
 			}
 		},
-		onLoad() {
-			console.log(this.login);
-			console.log(this.username);
-			console.log(uni.getStorageSync('login'));
-
-			if (uni.getStorageSync("login") === "1") {
-				this.login = true;
-				console.log(uni.getStorageSync("name"));
-				console.log('数据怎么不改');
-				this.username = uni.getStorageSync("username");
-				this.uid = uni.getStorageSync("uid");
-			} else {
-				this.login = false;
-				this.username = '未命名';
-				this.uid = '00000000';
-			}
+		mounted() {
+			console.log('mine页面生命周期');
 		},
 		methods: {
 			// 跳转
@@ -270,10 +273,15 @@
 			cancelLogout() {
 				this.showConfirmDialog = false;
 			},
+
 			// 退出登录方法，这里用一个示例方法代替
 			stateLogout() {
-				sessionStorage.setItem("login", "0");
-				this.login = false;
+				uni.setStorageSync('name', '未命名');
+				uni.setStorageSync('uid', '请先登录');
+				uni.setStorageSync('email', '0');
+				uni.setStorageSync('phone', '0');
+				uni.setStorageSync('login', false);
+				this.$store.commit('userLogout');
 				uni.navigateTo({
 					url: 'mine',
 				})

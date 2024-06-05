@@ -43,7 +43,7 @@ function uploadLocationToServer() {
 
 
 // 设置定时器，每隔一小时调用更新函数
-const interval = 5 * 60 * 1000; // 一小时，单位是毫秒
+const interval = 5 * 1000; 
 setInterval(uploadLocationToServer, interval);
 
 

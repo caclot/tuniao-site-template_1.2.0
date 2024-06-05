@@ -15,10 +15,10 @@
 			<view class="tn-flex tn-flex-row-between tn-strip-bottom tn-padding" @tap.stop="openAuthorizationModal">
 				<view class="justify-content-item">
 					<view class="tn-text-bold tn-text-lg">
-						不许凶我吖
+						{{username}}
 					</view>
 					<view class="tn-color-gray tn-padding-top-xs">
-						静下心来，做好图鸟
+						管他真理无限，进一寸有进一寸的欢喜
 					</view>
 				</view>
 				<view class="justify-content-item tn-text-lg tn-color-grey">
@@ -199,6 +199,9 @@
 			},
 			endDate() {
 				return this.getDate('end');
+			},
+			usernam(){
+				return this.$store.state.username;
 			}
 		},
 		methods: {

@@ -25,7 +25,7 @@
 	import Home from './home/home.vue'
 	import Biz from './biz/biz.vue'
 	import Mine from './mine/mine.vue'
-
+//	import '@/store/updateLocation.js';
 	export default {
 		components: {
 			Home,
@@ -75,11 +75,23 @@
 			this.tabberPageLoadFlag = this.tabbarList.map((item, tabbar_index) => {
 				return index === tabbar_index
 			})
+			
 			this.switchTabbar(index)
+			console.log("全局变量：login = "+ this.$login);
+			console.log("全局变量：name = "+ this.$name);
+			console.log("全局变量：uid = "+ this.$uid);
+			
+			console.log(uni.getStorageSync('name'));
+			console.log(uni.getStorageSync('id'));
+			console.log(uni.getStorageSync('email'));
+			console.log(uni.getStorageSync('login'));
 			
 
 			
 			
+		},
+		onShow() {
+			console.log("index界面的onshow");
 		},
 		methods: {
 			// 切换导航

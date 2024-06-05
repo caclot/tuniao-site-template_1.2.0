@@ -4,25 +4,7 @@
 	import updateCustomBarInfo from './tuniao-ui/libs/function/updateCustomBarInfo.js'
 
 	export default {
-		globalData: {
-			loginState: true,
-			
-			username: '未命名',
-			
-			uid: '00000000',
-			
-			phoneNum: '000',
-			
-			mail: '000'
-		},
-		methods:{
-			userLogin(){
-				globalData.loginState = true;
-			},
-			usetLogout(){
-				globalData.loginState = true;
-			},
-		},
+
 		onLaunch: function() {
 			uni.getSystemInfo({
 				success: function(e) {

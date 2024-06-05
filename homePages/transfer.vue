@@ -116,7 +116,7 @@
 					responsible: parseInt(this.responsible),
 					vehicleId: parseInt(this.vehicleId)
 				};
-
+				this.$store.commit("setvehicleid",this.vehicleId);
 				// 调用后端接口提交数据
 				uni.request({
 					url: 'http://139.196.211.123:8081/batch/createBatch',
