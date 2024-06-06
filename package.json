@@ -18,6 +18,7 @@
         ]
     },
     "dependencies": {
-        "@uni-ui/code-ui": "^1.5.3"
+        "@uni-ui/code-ui": "^1.5.3",
+        "vant": "^4.9.1"
     }
 }

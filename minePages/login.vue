@@ -71,7 +71,8 @@
 								uid: res.data.data.id,
 								phone: res.data.data.phone,
 								mail: res.data.data.eamil,
-								area: res.data.data.eamil
+								serveAt: res.data.data.serveAt,
+								logisticId:res.data.data.logisticId,
 							});
 							
 							uni.setStorage({
@@ -118,7 +119,21 @@
 									console.log("token本地存储成功");
 								}
 							});
-
+							
+							uni.setStorage({
+								key: 'serveat',
+								data: res.data.data.serveAt,
+								success: function() {
+									console.log("serveat本地存储成功");
+								}
+							});
+							uni.setStorage({
+								key: 'logisticId',
+								data: res.data.data.logisticId,
+								success: function() {
+									console.log("logisticId本地存储成功");
+								}
+							});
 							uni.showToast({
 								title: '登录成功',
 								icon: 'success',

@@ -45,7 +45,7 @@
 					backgroundColor: '#1b82d2'
 				},
 				arrList: [{
-						code: '01181016286106',
+						code: this.$store.state.packid,
 						size: 580, // 二维码大小
 						type: 'none',
 						padding: 10,
@@ -61,7 +61,7 @@
 
 				],
 				bar: {
-					code: '01181016286106',
+					code: this.$store.state.packid,
 					color: ['#45B649', '#00c3ff', '#ee0979', '#e96443', '#904e95'], // 条形码的颜色
 					bgColor: '#FFFFFF', // 背景色
 					width: 670, // 宽度

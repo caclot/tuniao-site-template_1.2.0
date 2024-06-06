@@ -73,7 +73,7 @@
 	.modal-content {
 		background-color: white;
 		border-radius: 20px;
-		width: 90%;
+		width: 80%;
 		max-width: 600px;
 		padding: 20px;
 		position: relative;
@@ -117,7 +117,7 @@
 	}
 
 	.save-button {
-		background-color: #3165cc;
+		background-color: #3d7eff;
 		color: white;
 		border: none;
 		border-radius: 20px;

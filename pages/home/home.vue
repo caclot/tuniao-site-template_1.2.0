@@ -88,7 +88,7 @@
 									<view class="order__item__operation__right__button">
 										<tn-button shadow shape="round" fontColor="tn-color-white"
 											backgroundColor="tn-bg-blue" :fontSize="24" height="auto"
-											padding="10rpx 18rpx"  @click="tosignupPage(item.id)">修改信息</tn-button>
+											padding="10rpx 18rpx" >修改信息</tn-button>
 									</view>
 								</view>
 							</view>
@@ -102,12 +102,8 @@
 		</view>
 
 
-<UpdatePackageModal
-      :visible="isModalVisible"
-      :initialData="selectedPackage"
-      @close="isModalVisible = false"
-      @save="updatePackageInfo"
-    />
+		<UpdatePackageModal :visible="isModalVisible" :initialData="selectedPackage" @close="isModalVisible = false"
+			@save="updatePackageInfo" />
 	</view>
 </template>
 
@@ -121,7 +117,7 @@
 			return {
 				isModalVisible: false,
 				selectedPackage: {},
-				serveat: 120102,
+				logisticsid: this.$store.state.logisticId,
 				list: [{
 						name: '待揽收',
 						count: 0
@@ -137,11 +133,22 @@
 				swiperHeight: 480,
 				unpickedpackages: [],
 				undeliveredpackages: [],
+
+				weight: 0,
+				packsize: ' ',
 			}
 		},
 
 		mounted() {
 			console.log("home界面onLoad运行");
+			this.fetchPackages(); // 初次加载包裹信息
+		},
+		created() {
+			console.log("home界面created运行");
+			this.fetchPackages(); // 初次加载包裹信息
+		},
+		onShow() {
+			console.log("home界面onshow运行");
 			this.fetchPackages(); // 初次加载包裹信息
 		},
 		onPullDownRefresh() {
@@ -155,9 +162,10 @@
 
 		methods: {
 			fetchPackages(isPullDown) {
-				const logisticsId = this.serveat; // 替换为实际的物流ID
+				const logisticsId = this.$store.state.logisticId; // 替换为实际的物流ID
+				console.log("地区id为：");
 				console.log(logisticsId);
-
+				
 				uni.request({
 					url: 'http://139.196.211.123:8081/package/getUnpickedPackages', // 替换为实际的服务器地址
 					method: 'GET',
@@ -224,47 +232,54 @@
 					}
 				});
 			},
+
 			showModal(item) {
+				const [length, width, height] = item.size.split(','); // 使用 split 方法按逗号分隔
+				this.$store.commit("setPickupPackid", item.id);
 				this.selectedPackage = {
-					'收货人': item.receiverName,
-					'手机号': item.receiverPhone,
-					'详细地址': item.receiverAddress,
 					'包裹重量': item.weight,
-					'包裹尺寸': item.size
+					'包裹长度': length,
+					'包裹宽度': width,
+					'包裹高度': height,
 				};
 				this.isModalVisible = true;
 			},
-			async updatePackageInfo(updatedData) {
-				try {
-					const response = await this.$http.post('/updatePackageInfo', {
-						receiverName: updatedData['收货人名字'],
-						receiverPhone: updatedData['手机号'],
-						receiverAddress: updatedData['详细地址'],
+			updatePackageInfo(updatedData) {
+				const size = `${updatedData['包裹长度']},${updatedData['包裹宽度']},${updatedData['包裹高度']}`;
+				console.log("id:"+this.$store.state.packid);
+				uni.request({
+					url: 'http://139.196.211.123:8081/package/updatePackage',
+					method: 'POST',
+					data: {
+						packageId: this.$store.state.packid,
 						weight: updatedData['包裹重量'],
-						size: updatedData['包裹尺寸'],
-						id: this.selectedPackage.id // 假设你有包裹的 ID
-					});
-
-					if (response.data.code === 200) {
+						size: size,
+					},
+					success: res=> {
+						if (res.data.code === 200) {
+							uni.showToast({
+								title: '保存成功',
+								icon: 'success'
+							});
+							this.isModalVisible = false;
+							this.fetchPackages(); // 刷新包裹信息
+						} else {
+							uni.showToast({
+								title: '保存失败',
+								icon: 'none'
+							});
+						}
+					},
+					fail: () => {
 						uni.showToast({
-							title: '更新成功',
-							icon: 'success'
-						});
-						this.isModalVisible = false;
-						this.fetchPackages(); // 刷新包裹信息
-					} else {
-						uni.showToast({
-							title: '更新失败',
+							title: '请求失败，请检查网络',
 							icon: 'none'
 						});
-					}
-				} catch (error) {
-					uni.showToast({
-						title: '请求失败，请检查网络',
-						icon: 'none'
-					});
-				}
+					},
+				});
+
 			},
+
 			updatePickListCount() {
 				const unpickedCount = this.unpickedpackages.length;
 				this.list = this.list.map((item, index) => {

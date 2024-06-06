@@ -56,7 +56,8 @@ const store = new Vuex.Store({
 		uid: '请先登录',
 		phone: '',
 		mail: '',
-		area: '',
+		serveAt: '',
+		logisticId: 0,
 
 	},
 	mutations: {
@@ -87,15 +88,18 @@ const store = new Vuex.Store({
 			state.uid = payload.uid;
 			state.phone = payload.phone;
 			state.mail = payload.mail;
-			state.area = payload.area;
+			state.serveAt = payload.serveAt;
+			state.logisticId = payload.logisticId;
 		},
 		userLogout(state) {
 			state.login = false;
 			state.username = '未登录';
 			state.uid = '请先登录';
-			state.phone = '';
-			state.mail = '';
-			state.area = '';
+			state.phone = ' ';
+			state.mail = ' ';
+			state.area = ' ';
+			state.serveAt = ' ';
+			state.logisticId = 0;
 		},
 		setLogin(state, status) {
 			state.login = status;

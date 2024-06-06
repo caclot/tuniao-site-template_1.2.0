@@ -18,7 +18,10 @@
 				<input v-model="phone" type="text" placeholder="请输入手机号" class="input" />
 				<input v-model="email" type="text" placeholder="请输入邮箱" class="input" />
 				<input v-model="password" type="password" placeholder="请输入密码" class="input" />
-				<input v-model="serveAt" type="text" placeholder="请输入网点id" class="input" />
+				<van-field readonly v-model="selectedArea" label="网点" is-link placeholder="请选择网点" @click="showAreaPicker = true"/>
+				        <van-popup v-model="showAreaPicker" round position="bottom">
+				          <van-area :columns="areaList" @confirm="onAreaConfirm" @cancel="showAreaPicker = false" />
+				        </van-popup>
 				<view class="button" @tap="register">注册</view>
 				<view class="login-link" @tap="goToLogin">已有账号？登录</view>
 			</view>
@@ -34,17 +37,16 @@
 		data() {
 			return {
 				name: '',
-				phone: '',
 				email: '',
+				phone: '',
 				password: '',
-				serveAt: '',
+				serveat: '',
 			};
 		},
 		methods: {
 			register() {
 				// 检查输入是否为空
-				if (!this.name.trim() || !this.phone.trim() || !this.email.trim() || !this.password.trim() || !this
-					.confirmPassword.trim()) {
+				if (!this.name.trim() || !this.phone.trim() || !this.email.trim() || !this.password.trim() || !this.confirmPassword.trim()) {
 					uni.showToast({
 						title: '请输入完整信息',
 						icon: 'none',
