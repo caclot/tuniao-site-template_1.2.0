@@ -276,11 +276,12 @@
 
 			// 退出登录方法，这里用一个示例方法代替
 			stateLogout() {
-				uni.setStorageSync('name', '未命名');
-				uni.setStorageSync('uid', '请先登录');
-				uni.setStorageSync('email', '0');
-				uni.setStorageSync('phone', '0');
-				uni.setStorageSync('login', false);
+				uni.setStorage('name', '未命名');
+				uni.setStorage('uid', '请先登录');
+				uni.setStorage('email', '0');
+				uni.setStorage('phone', '0');
+				uni.setStorage('login', false);
+				console.log(uni.getStorage('name'));
 				this.$store.commit('userLogout');
 				uni.navigateTo({
 					url: 'mine',

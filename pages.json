@@ -66,6 +66,13 @@
 						"navigationBarTitleText": "揽收快件",
 						"enablePullDownRefresh": false
 					}
+				},
+				{
+					"path": "split",
+					"style": {
+						"navigationBarTitleText": "拆分包裹",
+						"enablePullDownRefresh": false
+					}
 				}
 			]
 		},
@@ -128,7 +135,7 @@
 	"globalStyle": {
 		"navigationStyle": "custom",
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "图鸟官网",
+		"navigationBarTitleText": "卓越快递",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
 	}

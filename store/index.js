@@ -58,6 +58,8 @@ const store = new Vuex.Store({
 		mail: '',
 		serveAt: '',
 		logisticId: 0,
+		
+		receiverAddress: ''
 
 	},
 	mutations: {
@@ -113,6 +115,9 @@ const store = new Vuex.Store({
 		setvehicleid(state,vehicleid){
 			state.vehicleid = vehicleid;
 		},
+		updatereceiverAddress(state,receiverAddress){
+			state.receiverAddress = receiverAddress;
+		}
 	},
 	actions: {}
 })

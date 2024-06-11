@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="container" >
 		<tn-nav-bar fixed customBack :bottomShadow="false" backgroundColor="#efa915">
 			<view slot="back" class='tn-custom-nav-bar__back' @click="goBack">
 				<text class='icon tn-icon-left-arrow'></text>
@@ -9,12 +9,15 @@
 			</view>
 		</tn-nav-bar>
 		<view class="background"></view>
-		<view class="container2">
+		<view class="container2" @click='handleClick()'>
 			<view class="panel">
 				<view class="header">请扫描以下任意二维码或条形码</view>
 				<view>
 					<w-barcode :options="bar"></w-barcode>
 					<view class="barnum">{{ code }}</view>
+				</view>
+				<view class="">
+					
 				</view>
 				<view style="display: flex;justify-content:space-between ;width: 80%;flex-wrap: wrap;">
 					<w-qrcode @press="longtap" style="margin-top: 1rem;" v-for="(item,index) in arrList" :key="index"
@@ -36,7 +39,7 @@
 		data() {
 			return {
 
-				package_id1: '',
+				package_id1: this.$store.state.packid,
 
 				show: true,
 				code: this.$store.state.packid,
@@ -95,7 +98,42 @@
 			// 拍照按钮点击事件
 
 			// 拍照按钮悬停时高亮
-
+			handleClick() {
+				const postData = {
+					id: this.code //传入输入框中的数据
+				}
+				console.log(this.code);
+			
+				uni.request({
+					url: 'http://139.196.211.123:8081/package/pickupPackage',
+					method: 'POST',
+					data: String(this.code),
+					success: (res) => {
+						console.log('请求成功', res.data);
+						if (res.statusCode === 200) {
+							uni.showToast({
+								title: '揽收成功',
+								icon: 'success'
+							})
+						} else {
+							console.error('请求失败', res.errMsg);
+							// 请求失败也可以弹出提示框
+							uni.showToast({
+								title: '揽收失败，请重试',
+								icon: 'none'
+							});
+						}
+					},
+					fail: (err) => {
+						console.error('请求失败', err.errMsg);
+						// 请求失败也可以弹出提示框
+						uni.showToast({
+							title: '揽收失败，请重试',
+							icon: 'none'
+						});
+					}
+				});
+			}
 		}
 	};
 </script>

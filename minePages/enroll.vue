@@ -1,6 +1,4 @@
 <template>
-
-
 	<view class="container">
 		<!-- 顶部自定义导航 -->
 		<tn-nav-bar fixed customBack :bottomShadow="false" backgroundColor="#FFFFFF">
@@ -11,17 +9,20 @@
 				<text class="tn-text-bold tn-text-xl tn-color-black">登录登录</text>
 			</view>
 		</tn-nav-bar>
+
 		<view class="register-container">
 			<view class="register-form">
 				<view class="logo">注册</view>
 				<input v-model="name" type="text" placeholder="请输入姓名" class="input" />
-				<input v-model="phone" type="text" placeholder="请输入手机号" class="input" />
+				<input v-model="phonenum" type="text" placeholder="请输入手机号" class="input" />
 				<input v-model="email" type="text" placeholder="请输入邮箱" class="input" />
 				<input v-model="password" type="password" placeholder="请输入密码" class="input" />
-				<van-field readonly v-model="selectedArea" label="网点" is-link placeholder="请选择网点" @click="showAreaPicker = true"/>
-				        <van-popup v-model="showAreaPicker" round position="bottom">
-				          <van-area :columns="areaList" @confirm="onAreaConfirm" @cancel="showAreaPicker = false" />
-				        </van-popup>
+				<view class="picker" @click="onPickAddress()">
+					<view v-if="address">{{address}}</view>
+					<view style="color:#999;font-size:32rpx" v-else>省、市、区</view>
+				</view>
+				<pickAdress :isOpen="isPickAddressShow" @close="onCloseAddress" @bindChage="onBindChageAddress">
+				</pickAdress>
 				<view class="button" @tap="register">注册</view>
 				<view class="login-link" @tap="goToLogin">已有账号？登录</view>
 			</view>
@@ -30,23 +31,45 @@
 </template>
 
 <script>
+	import pickAdress from '@/components/pick-address.vue'
 	import template_page_mixin from '@/libs/mixin/template_page_mixin.js'
 	export default {
 		name: 'TemplateHistory',
 		mixins: [template_page_mixin],
+		components: {
+			pickAdress,
+		},
 		data() {
 			return {
 				name: '',
 				email: '',
-				phone: '',
+				phonenum: '',
 				password: '',
-				serveat: '',
+				logistics: '',
+				isPickAddressShow: false,
+				selectAddress: {},
+				address: '',
 			};
 		},
 		methods: {
+			onPickAddress() {
+				console.log("弹出选择框");
+				if (this.authState) return
+				this.isPickAddressShow = true
+			},
+			onCloseAddress(type, data) {
+				this.isPickAddressShow = false
+			},
+			onBindChageAddress(data) {
+				this.selectAddress = data
+				this.address = data.area1_name + data.area2_name + data.area3_name
+				this.logistics = data.area3_code
+				this.isPickAddressShow = false
+			},
 			register() {
+
 				// 检查输入是否为空
-				if (!this.name.trim() || !this.phone.trim() || !this.email.trim() || !this.password.trim() || !this.confirmPassword.trim()) {
+				if (!this.name.trim() || !this.phonenum.trim() || !this.email.trim() || !this.password.trim()) {
 					uni.showToast({
 						title: '请输入完整信息',
 						icon: 'none',
@@ -54,22 +77,16 @@
 					return;
 				}
 				// 检查密码和确认密码是否一致
-				if (this.password !== this.confirmPassword) {
-					uni.showToast({
-						title: '两次输入的密码不一致',
-						icon: 'none',
-					});
-					return;
-				}
 				// 发送注册请求
 				uni.request({
 					url: 'http://139.196.211.123:8081/employee/enroll',
 					method: 'POST',
 					data: {
 						name: this.name,
-						phone: this.phone,
+						phone: this.phonenum,
 						email: this.email,
-						passwordHash: this.password,
+						password: this.password,
+						serveAt: this.logistics,
 					},
 					success: (res) => {
 						if (res.data.code === 200) {
@@ -101,10 +118,12 @@
 			},
 			goToLogin() {
 				uni.redirectTo({
-				  url: 'login',
+					url: 'login',
 				});
 
 			},
+
+
 		},
 	};
 </script>
@@ -136,6 +155,15 @@
 
 	.input {
 		width: 90%;
+		padding: 10px;
+		margin-bottom: 15px;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+		font-size: 16px;
+	}
+
+	.picker {
+		width: 96%;
 		padding: 10px;
 		margin-bottom: 15px;
 		border: 1px solid #ccc;

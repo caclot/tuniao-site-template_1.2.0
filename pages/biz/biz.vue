@@ -119,11 +119,11 @@
             url: '/homePages/signup'
           },
           {
-            title: '待送包裹',
+            title: '拆分包裹',
             icon: 'trophy-fill',
             color: '#F33F5A',
             value: '查看详情',
-            url: '/homePages/honor'
+            url: '/homePages/split'
           },
           {
             title: '敬请期待',

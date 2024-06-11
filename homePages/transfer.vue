@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		
+
 		<tn-nav-bar fixed customBack :bottomShadow="false" backgroundColor="#FFFFFF">
 			<view slot="back" class='tn-custom-nav-bar__back' @click="goBack">
 				<text class='icon tn-icon-left-arrow'></text>
@@ -9,27 +9,45 @@
 				<text class="tn-text-bold tn-text-xl tn-color-black">包裹转运</text>
 			</view>
 		</tn-nav-bar>
-		
-		
+
+
 		<view class="sections">
 			<uni-collapse accordion v-model="accordionVal" @change="change">
-				
+
 				<uni-collapse-item title="创建转运批次">
 					<view class="content">
-						<view class="uni-form-item uni-column">
-							<view class="title">出发地转运中心编号：</view>
-							<input class="uni-input" v-model="origin" placeholder="请输入出发地转运中心编号" />
+
+						<view class="title">出发地转运中心编号：</view>
+						<view class="uni-form-item uni-column input-box" @click="onPickAddress1()">
+							<view class="picker">
+								<view class="uni-input" v-if="address1">{{address1}}</view>
+								<view class="uni-input" style="color:#999;font-size:31rpx" v-else>请选择出发地转运中心</view>
+							</view>
 						</view>
-						<view class="uni-form-item uni-column">
-							<view class="title">目的地转运中心编号：</view>
-							<input class="uni-input" v-model="destination" placeholder="请输入目的地转运中心编号" />
+						<pickAdress :isOpen="isPickAddressShow1" @close="onCloseAddress"
+							@bindChage="onBindChageAddress1">
+						</pickAdress>
+
+
+						<view class="title">目的地转运中心编号：</view>
+						<view class="uni-form-item uni-column input-box" @click="onPickAddress2()">
+							<view class="picker">
+								<view class="uni-input" v-if="address2">{{address2}}</view>
+								<view class="uni-input" style="color:#999;font-size:31rpx" v-else>请选择目的地转运中心</view>
+							</view>
 						</view>
-						<view class="uni-form-item uni-column">
-							<view class="title">负责人ID：</view>
+						<pickAdress :isOpen="isPickAddressShow2" @close="onCloseAddress"
+							@bindChage="onBindChageAddress2">
+						</pickAdress>
+
+
+						<view class="title">负责人ID：</view>
+						<view class="uni-form-item uni-column input-box">
 							<input class="uni-input" v-model="responsible" placeholder="请输入负责人ID" />
 						</view>
-						<view class="uni-form-item uni-column">
-							<view class="title">载具ID：</view>
+						<view class="title">载具ID：</view>
+						<view class="uni-form-item uni-column input-box">
+
 							<input class="uni-input" v-model="vehicleId" placeholder="请输入载具ID" />
 						</view>
 						<view class="uni-form-item uni-column">
@@ -40,12 +58,16 @@
 
 				<uni-collapse-item title="添加包裹到批次">
 					<view class="content">
-						<view class="uni-form-item uni-column">
-							<view class="title">包裹ID：</view>
+						<view class="title">包裹ID：</view>
+						<view class="uni-form-item uni-column input-box">
+
 							<input class="uni-input" v-model="packageIds" placeholder="请输入包裹ID" />
+							<view class="camera-btn" @click="scanCode()">
+								<uni-icons type="scan" :size="28" color="#666"></uni-icons>
+							</view>
 						</view>
-						<view class="uni-form-item uni-column">
-							<view class="title">批次ID：</view>
+						<view class="title">批次ID：</view>
+						<view class="uni-form-item uni-column input-box">
 							<input class="uni-input" v-model="batchId" placeholder="请输入批次ID" />
 						</view>
 						<view class="uni-form-item uni-column">
@@ -57,13 +79,9 @@
 				<uni-collapse-item title="更新批次状态">
 					<view class="content">
 						<!-- 这里放更新批次状态的表单 -->
-						<view class="uni-form-item uni-column">
-							<view class="title">批次ID：</view>
+						<view class="title">批次ID：</view>
+						<view class="uni-form-item uni-column input-box">
 							<input class="uni-input" v-model="batchId" placeholder="请输入批次ID" />
-						</view>
-						<view class="uni-form-item uni-column">
-							<view class="title">状态：</view>
-							<input class="uni-input" v-model="status" placeholder="请输入状态" />
 						</view>
 						<view class="uni-form-item uni-column">
 							<button @click="updateBatchStatus" class="uni-button">确定</button>
@@ -77,16 +95,19 @@
 </template>
 
 <script>
+	import pickAdress from '@/components/pick-address.vue'
 	import template_page_mixin from '@/libs/mixin/template_page_mixin.js'
 	import '@/store/updateLocation.js';
 	export default {
 		name: 'TemplateHistory',
 		mixins: [template_page_mixin],
-		
+		components: {
+			pickAdress,
+		},
 		data() {
 			return {
 				// 第一个下拉框的数据
-				accordionVal1: '0',
+				accordionVal: '0',
 				origin: '',
 				destination: '',
 				responsible: '',
@@ -100,14 +121,63 @@
 				// 第三个下拉框的数据
 				accordionVal3: '0',
 				batchId: '',
-				status: ''
+				status: '',
+
+				logistics: '',
+				isPickAddressShow1: false,
+				isPickAddressShow2: false,
+				selectAddress: {},
+				address1: '',
+				address2: '',
 			};
 		},
 		methods: {
+			onPickAddress1() {
+				console.log("弹出选择框1");
+				if (this.authState) return
+				this.isPickAddressShow1 = true
+			},
+			onPickAddress2() {
+				console.log("弹出选择框2");
+				if (this.authState) return
+				this.isPickAddressShow2 = true
+			},
+			onCloseAddress(type, data) {
+				this.isPickAddressShow2 = false
+			},
+			onBindChageAddress1(data) {
+				console.log("触发弹窗1")
+				this.selectAddress = data
+				this.address1 = data.area1_name + data.area2_name + data.area3_name
+				this.origin = data.area3_code
+				this.isPickAddressShow1 = false
+				console.log("origin:"+this.origin)
+				console.log("destination:"+this.destination)
+			},
+			onBindChageAddress2(data) {
+				console.log("触发弹窗2")
+				this.selectAddress = data
+				this.address2 = data.area1_name + data.area2_name + data.area3_name
+				this.destination = data.area3_code
+				this.isPickAddressShow2 = false
+				console.log("origin:"+this.origin)
+				console.log("destination:"+this.destination)
+			},
 			change(e) {
 				console.log(e);
 			},
-
+			scanCode() {
+				console.log('大概');
+				uni.scanCode({
+					success: (res) => {
+						// 扫码成功，将结果填充到输入框中
+						this.packageIds = res.result;
+					},
+					fail: (err) => {
+						console.error('扫码失败', err);
+					}
+				});
+			},
 			createBatch() {
 				// 构造提交的数据
 				const postData = {
@@ -116,7 +186,7 @@
 					responsible: parseInt(this.responsible),
 					vehicleId: parseInt(this.vehicleId)
 				};
-				this.$store.commit("setvehicleid",this.vehicleId);
+				this.$store.commit("setvehicleid", this.vehicleId);
 				// 调用后端接口提交数据
 				uni.request({
 					url: 'http://139.196.211.123:8081/batch/createBatch',
@@ -223,25 +293,57 @@
 
 	.title {
 		font-weight: bold;
+		font-size: 15px;
 		margin-bottom: 5px;
+		margin-left: 15rpx;
+		margin-top: 8rpx;
 	}
+
 	.sections {
 		margin-top: 20%;
 	}
-	
+
 	.uni-input {
-		border: 1px solid #ccc;
 		padding: 5px;
+		font-size: 30rpx;
 	}
-	
+
 	.uni-button {
 		background-color: #007aff;
 		color: #fff;
-		padding: 10px 20px;
+		padding: 3px 20px;
 		border-radius: 5px;
 		font-size: 16px;
+
 	}
-	
+
+	.camera-btn {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-left: 270rpx;
+		width: 40rpx;
+		height: 40rpx;
+		background-color: #ffffff;
+		/* 初始颜色 */
+		cursor: pointer;
+	}
+
+	.input-box {
+		position: relative;
+		display: flex;
+		align-items: center;
+		border: 2px solid #c1c1c1;
+		/* 添加蓝色轮廓 */
+		border-radius: 6px;
+
+	}
+
+	.camera-btn:hover {
+		background-color: #999;
+		/* 鼠标悬停时颜色变深 */
+	}
+
 	.tn-custom-nav-bar__back {
 		width: 60%;
 		height: 100%;
@@ -255,14 +357,13 @@
 		border: 1rpx solid rgba(255, 255, 255, 0.5);
 		color: #FFFFFF;
 		font-size: 18px;
-	
+
 		.icon {
 			display: block;
 			flex: 1;
 			margin: auto;
 			text-align: center;
 		}
-	
+
 	}
-	
 </style>

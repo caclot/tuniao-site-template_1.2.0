@@ -77,6 +77,14 @@
 			})
 			
 			this.switchTabbar(index)
+			this.$store.commit('userLogin', {
+				username: uni.getStorageSync('name'),
+				uid: uni.getStorageSync('id'),
+				phone: uni.getStorageSync('phone'),
+				mail: uni.getStorageSync('email'),
+				serveAt: uni.getStorageSync('serveat'),
+				logisticId: uni.getStorageSync('logisticId'),
+			});
 			console.log("全局变量：login = "+ this.$login);
 			console.log("全局变量：name = "+ this.$name);
 			console.log("全局变量：uid = "+ this.$uid);
@@ -85,6 +93,8 @@
 			console.log(uni.getStorageSync('id'));
 			console.log(uni.getStorageSync('email'));
 			console.log(uni.getStorageSync('login'));
+			console.log(uni.getStorageSync('serveat'));
+			console.log(uni.getStorageSync('logisticId'));
 			
 
 			

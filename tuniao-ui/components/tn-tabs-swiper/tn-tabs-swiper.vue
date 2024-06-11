@@ -127,7 +127,7 @@
       badgeOffset: {
         type: Array,
         default() {
-          return [20, 22]
+          return [20, 120]
         }
       },
       // 是否加粗字体

@@ -3,13 +3,12 @@
 		<!-- 顶部自定义导航 -->
 
 
-		<view class="order--wrap" :style="{top: vuex_custom_bar_height  +'px'}">
+		<view class="order--wrap" :style="{top: vuex_custom_bar_height  +'px'}" v-if="serveAtpermission">
 			<!-- 顶部标签 -->
 			<view class="tn-bg-white">
 				<tn-tabs-swiper class="order__tabs tn-text-xl" ref="tabs" activeColor="#3165CC" inactiveColor="#080808"
-					:list="list" :current="tabsIndex" :isScroll="false" @change="tabsChange"></tn-tabs-swiper>
+					:list="list" :current="tabsIndex" :isScroll="false" @change="tabsChange" @click="fetchPackages()"></tn-tabs-swiper>
 			</view>
-
 
 
 			<!-- 标签内容 -->
@@ -60,6 +59,7 @@
 				<swiper-item class="order__swiper__item">
 					<scroll-view :style="{height: `${swiperHeight}px`}" scroll-y>
 						<view v-for="(item, index) in undeliveredpackages" :key="item.id" class="order__item">
+							
 							<view @click="tosignupPage(item.id)">
 								<view
 									class="order__item__head tn-flex tn-flex-direction-row tn-flex-col-center tn-flex-row-between">
@@ -100,8 +100,12 @@
 
 			</swiper>
 		</view>
-
-
+		<view class="homeelse" v-else>
+		    <view class="center-container">
+		      <zero-empty></zero-empty>
+		      <text class="message">您没有查看权限\n！！！！!</text>
+		    </view>
+		  </view>
 		<UpdatePackageModal :visible="isModalVisible" :initialData="selectedPackage" @close="isModalVisible = false"
 			@save="updatePackageInfo" />
 	</view>
@@ -113,6 +117,12 @@
 		components: {
 			UpdatePackageModal
 		},
+		computed: {
+			serveAtpermission(){
+				if(this.$store.state.serveAt === 'district') return true;
+				else return false;
+			}
+		},
 		data() {
 			return {
 				isModalVisible: false,
@@ -123,7 +133,7 @@
 						count: 0
 					},
 					{
-						name: '待签收',
+						name: '待派送',
 						count: 0
 					},
 				],
@@ -348,6 +358,8 @@
 			},
 			// 标签栏值发生改变
 			tabsChange(index) {
+				console.log("标签栏值发生改变")
+				this.fetchPackages()
 				this.swiperIndex = index
 			},
 			// swiper-item位置发生改变
@@ -405,7 +417,24 @@
 		}
 
 	}
-
+	.homeelse {
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+	  height: 100vh;
+	}
+	.center-container {
+	  display: flex;
+	  flex-direction: column;
+	  justify-content: center;
+	  align-items: center;
+	}
+	.message {
+	  margin-top: 300px; /* 控制文字与 zero-empty 组件之间的距离 */
+	  font-size: 31px;
+	  text-align: center;
+	  color: #c8c8c8;
+	}
 	.order {
 		&--wrap {
 			position: fixed;
@@ -524,7 +553,14 @@
 					}
 				}
 			}
+			.background {
+				width: 100%;
+				height: 100%;
+				position: absolute;
 
+				background-color: #1b82d2;
+			}
+			
 			/* 内容 end */
 
 			/* 操作按钮 start */
