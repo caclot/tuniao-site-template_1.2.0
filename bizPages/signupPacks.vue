@@ -6,7 +6,7 @@
 	        <text class='icon tn-icon-left-arrow'></text>
 	      </view>
 	      <view class="tn-flex tn-flex-col-center tn-flex-row-center">
-	        <text class="tn-text-bold tn-text-xl tn-color-black">包裹签收</text>
+	        <text class="tn-text-bold tn-text-xl tn-color-black">包裹派送</text>
 	      </view>
 	    </tn-nav-bar>
 	    
@@ -16,7 +16,7 @@
 	        <view class="camera-btn" @click="scanCode">
 	          <uni-icons type="scan" :size="28" color="#666"></uni-icons>
 	        </view>
-	        <view class="search-btn" @click="handleClick">签收</view>
+	        <view class="search-btn" @click="handleClick">派送</view>
 	      </view>
 	    </view>
 	  </view>
@@ -58,14 +58,14 @@
 					console.log(this.package_id3);
 		
 					uni.request({
-						url: 'http://139.196.211.123:8081/package/signedPackage',
+						url: 'http://139.196.211.123:8081/package/deliverPackage',
 						method: 'POST',
-						data: this.package_id3,
+						data: String(this.package_id3),
 						success: (res) => {
 							console.log('请求成功', res.data);
 							if (res.statusCode === 200) {
 								uni.showToast({
-									title: '签收成功',
+									title: '派送成功',
 									icon: 'success'
 								})
 							}
@@ -73,7 +73,7 @@
 								console.error('请求失败', res.errMsg);
 								// 请求失败也可以弹出提示框
 								uni.showToast({
-									title: '签收失败，请重试',
+									title: '派送失败，请重试',
 									icon: 'none'
 								});
 							}

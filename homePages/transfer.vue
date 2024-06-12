@@ -17,19 +17,8 @@
 				<uni-collapse-item title="创建转运批次">
 					<view class="content">
 
-						<view class="title">出发地转运中心编号：</view>
-						<view class="uni-form-item uni-column input-box" @click="onPickAddress1()">
-							<view class="picker">
-								<view class="uni-input" v-if="address1">{{address1}}</view>
-								<view class="uni-input" style="color:#999;font-size:31rpx" v-else>请选择出发地转运中心</view>
-							</view>
-						</view>
-						<pickAdress :isOpen="isPickAddressShow1" @close="onCloseAddress"
-							@bindChage="onBindChageAddress1">
-						</pickAdress>
 
-
-						<view class="title">目的地转运中心编号：</view>
+						<view class="title">选择目的地：</view>
 						<view class="uni-form-item uni-column input-box" @click="onPickAddress2()">
 							<view class="picker">
 								<view class="uni-input" v-if="address2">{{address2}}</view>
@@ -41,10 +30,6 @@
 						</pickAdress>
 
 
-						<view class="title">负责人ID：</view>
-						<view class="uni-form-item uni-column input-box">
-							<input class="uni-input" v-model="responsible" placeholder="请输入负责人ID" />
-						</view>
 						<view class="title">载具ID：</view>
 						<view class="uni-form-item uni-column input-box">
 
@@ -68,7 +53,7 @@
 						</view>
 						<view class="title">批次ID：</view>
 						<view class="uni-form-item uni-column input-box">
-							<input class="uni-input" v-model="batchId" placeholder="请输入批次ID" />
+							<input class="uni-input" v-model="batchId2" placeholder="请输入批次ID" />
 						</view>
 						<view class="uni-form-item uni-column">
 							<button @click="addPackagesToBatch" class="uni-button">确定</button>
@@ -76,12 +61,12 @@
 					</view>
 				</uni-collapse-item>
 
-				<uni-collapse-item title="更新批次状态">
+				<uni-collapse-item title="确认已送达">
 					<view class="content">
 						<!-- 这里放更新批次状态的表单 -->
 						<view class="title">批次ID：</view>
 						<view class="uni-form-item uni-column input-box">
-							<input class="uni-input" v-model="batchId" placeholder="请输入批次ID" />
+							<input class="uni-input" v-model="batchId2" placeholder="请输入批次ID" />
 						</view>
 						<view class="uni-form-item uni-column">
 							<button @click="updateBatchStatus" class="uni-button">确定</button>
@@ -121,10 +106,9 @@
 				// 第三个下拉框的数据
 				accordionVal3: '0',
 				batchId: '',
-				status: '',
+				status: 'arrive',
 
 				logistics: '',
-				isPickAddressShow1: false,
 				isPickAddressShow2: false,
 				selectAddress: {},
 				address1: '',
@@ -132,11 +116,6 @@
 			};
 		},
 		methods: {
-			onPickAddress1() {
-				console.log("弹出选择框1");
-				if (this.authState) return
-				this.isPickAddressShow1 = true
-			},
 			onPickAddress2() {
 				console.log("弹出选择框2");
 				if (this.authState) return
@@ -145,23 +124,26 @@
 			onCloseAddress(type, data) {
 				this.isPickAddressShow2 = false
 			},
-			onBindChageAddress1(data) {
-				console.log("触发弹窗1")
-				this.selectAddress = data
-				this.address1 = data.area1_name + data.area2_name + data.area3_name
-				this.origin = data.area3_code
-				this.isPickAddressShow1 = false
-				console.log("origin:"+this.origin)
-				console.log("destination:"+this.destination)
-			},
 			onBindChageAddress2(data) {
 				console.log("触发弹窗2")
 				this.selectAddress = data
+
 				this.address2 = data.area1_name + data.area2_name + data.area3_name
-				this.destination = data.area3_code
+				if (data.area3_code) {
+					this.destination = data.area3_code
+					console.log(data.destination)
+				} else if (data.area2_code) {
+					this.destination = data.area2_code
+					console.log(data.destination)
+				} else {
+					this.destination = data.area1_code
+					console.log(data.destination)
+				}
+
 				this.isPickAddressShow2 = false
-				console.log("origin:"+this.origin)
-				console.log("destination:"+this.destination)
+				console.log("origin:" + this.origin)
+				console.log("destination:" + this.destination)
+				console.log(data)
 			},
 			change(e) {
 				console.log(e);
@@ -181,11 +163,16 @@
 			createBatch() {
 				// 构造提交的数据
 				const postData = {
-					origin: parseInt(this.origin),
+					origin: parseInt(this.$store.state.logisticId),
 					destination: parseInt(this.destination),
-					responsible: parseInt(this.responsible),
+					responsible: parseInt(this.$store.state.uid),
 					vehicleId: parseInt(this.vehicleId)
 				};
+
+				console.log(this.$store.state.logisticId);
+				console.log(this.$store.state.uid);
+				// console.log(this.$store.state.logisticId);
+				// console.log(this.$store.state.logisticId);
 				this.$store.commit("setvehicleid", this.vehicleId);
 				// 调用后端接口提交数据
 				uni.request({
@@ -193,6 +180,11 @@
 					method: 'POST',
 					data: postData,
 					success: (res) => {
+						this.batchId2 = res.data.data
+
+						console.log(res.data.data);
+
+						console.log(this.batchId2);
 						// 提交成功，显示成功提示
 						uni.showToast({
 							title: '提交成功',
@@ -211,8 +203,8 @@
 			addPackagesToBatch() {
 				// 构造提交的数据
 				const postData = {
-					PackageIds: this.packageIds.split(',').map(id => parseInt(id.trim())), // 将输入的包裹ID字符串转为数组
-					BatchId: parseInt(this.batchId) // 将输入的批次ID转为整数
+					packageIds: this.packageIds.split(',').map(id => parseInt(id.trim())), // 将输入的包裹ID字符串转为数组
+					batchId: parseInt(this.batchId2) // 将输入的批次ID转为整数
 				};
 
 				// 调用后端接口提交数据
@@ -238,7 +230,7 @@
 			},
 			updateBatchStatus() {
 				const postData = {
-					batchId: parseInt(this.batchId),
+					batchId: parseInt(this.batchId2),
 					status: this.status
 				};
 

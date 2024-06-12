@@ -68,7 +68,7 @@
 										<text
 											class="tn-color-blue--disabled tn-padding-left-xs tn-text-df tn-icon-copy"></text>
 									</view>
-									<view class="tn-color-gray">待揽收</view>
+									<view class="tn-color-gray">待派送</view>
 								</view>
 
 								<view
@@ -83,14 +83,7 @@
 										class="order__item__operaation__left--text tn-color-gray">{{ item.receiverName }}
 										{{ item.receiverPhone }}</text>
 								</view>
-								<view
-									class="order__item__operation__right tn-flex tn-flex-direction-row tn-flex-nowrap tn-flex-col-center tn-flex-row-right">
-									<view class="order__item__operation__right__button">
-										<tn-button shadow shape="round" fontColor="tn-color-white"
-											backgroundColor="tn-bg-blue" :fontSize="24" height="auto"
-											padding="10rpx 18rpx" >修改信息</tn-button>
-									</view>
-								</view>
+
 							</view>
 						</view>
 						<view class="tn-padding-bottom"></view>

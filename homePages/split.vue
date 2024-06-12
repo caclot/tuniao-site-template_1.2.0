@@ -67,7 +67,7 @@ import template_page_mixin from '@/libs/mixin/template_page_mixin.js'
 				showbtn: false,
 				selectid: '',
 				swiperIndex: 0,
-				swiperTop: 120,
+				swiperTop: 160,
 				swiperHeight: 480,
 				unsplitedpackages: [],
 				undeliveredpackages: [],
@@ -191,7 +191,7 @@ import template_page_mixin from '@/libs/mixin/template_page_mixin.js'
 				uni.scanCode({
 					success: (res) => {
 						this.packageid = res.result;
-						nextPackage();
+						this.nextPackage();
 					},
 					fail: (err) => {
 						console.error('扫码失败', err);
@@ -205,7 +205,7 @@ import template_page_mixin from '@/libs/mixin/template_page_mixin.js'
 
 			nextPackage() {
 				uni.request({
-					url: 'http://http://139.196.211.123:8081/package/getNextDestination',
+					url: 'http://139.196.211.123:8081/package/getNextDestination',
 					method: 'GET',
 					data: {
 						packageId: this.packageid,
@@ -213,9 +213,10 @@ import template_page_mixin from '@/libs/mixin/template_page_mixin.js'
 					},
 					success: (res) => {
 						if (res.data.code === 200) {
+							console.log(res.data.data);
 							// 弹窗显示获取的结果
 							uni.showModal({
-								title: '包裹信息',
+								title: '下一站是',
 								content: JSON.stringify(res.data.data),
 								showCancel: false,
 							});

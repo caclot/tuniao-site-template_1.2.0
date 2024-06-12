@@ -28,7 +28,7 @@
 	import {
 		mapGetters
 	} from "vuex";
-	import addressData from '@/address.js'
+	import addressData from '@/address(1).js'
 	export default {
 		props: {
 			isOpen: {

@@ -144,7 +144,7 @@
 						</view>
 						<view class="tn-margin-left-sm tn-flex-1">技术热线</view>
 						<view
-							class="tn-margin-left-sm tn-color-wallpaper tn-text-sm tn-padding-left-xs tn-padding-right-xs tn-bg-gray--light tn-round">
+							class="tn-margin-left-sm tn-color-wallpaper tn-text-sm tn-padding-left-xs tn-padding-right-xs tn-bg-gray--light tn-round" @click="callPhoneNumber">
 							只有帅的人才能看见</view>
 					</view>
 				</tn-list-cell>
